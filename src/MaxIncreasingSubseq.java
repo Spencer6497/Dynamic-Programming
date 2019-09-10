@@ -11,6 +11,20 @@ import java.io.*;
 
 public class MaxIncreasingSubseq {
     public static void main(String[] args) {
+        // Create initial char array to hold string
+        char[] string;
+
+        // Create scanner object to read user input as string
+        Scanner scanner = new Scanner(System.in);
+
+        // Ask the user for input
+        System.out.print("Enter a string: ");
+        string = scanner.next().toCharArray();
+
+        // Test
+        for (char c : string) {
+            System.out.print(c);
+        }
 
     }
 }
