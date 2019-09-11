@@ -8,9 +8,10 @@
 
 import java.util.*;
 import java.io.*;
+import java.lang.Math.*;
 
 public class MaxIncreasingSubseq {
-    public static void main(String[] args) {
+    public static <string> void main(String[] args) {
         // Create initial char array to hold string
         char[] string;
 
@@ -21,10 +22,28 @@ public class MaxIncreasingSubseq {
         System.out.print("Enter a string: ");
         string = scanner.next().toCharArray();
 
-        // Test
-        for (char c : string) {
-            System.out.print(c);
+        // Create initial int arrays to hold score and prev
+        int[] score = new int[string.length], prev = new int[string.length];
+
+        /* Initialize score array; may be unnecessary
+        for (int i = 0; i < string.length; i++) {
+            score[i] = 1;
+        } */
+
+        // Hold max #
+        int max = 1;
+
+        // Calculate scores
+        for (int i = 0; i < string.length; i++) {
+            for (int j = 0; j < i; j++) {
+                score[i] = 1 + Math.max(score[j]:  j < i, string[j] < string[i]);
+            }
         }
+
+        /* Test
+        for (int i : score) {
+            System.out.print(i);
+        } */
 
     }
 }
