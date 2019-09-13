@@ -28,11 +28,21 @@ public class MaxIncreasingSubseq {
         // Populate score array with default score of 1
         Arrays.fill(score, 1);
 
+        // Populate prev array with default index -1
+        Arrays.fill(prev, -1);
+
         // Calculate scores
         for (int i = 1; i < string.length; i++) {
             for (int j = 0; j < i; j++) {
                 if (string[j] < string[i]) {
+                    if ((score[j] + 1) > score[i]) {
+                        prev[i] = j;
+                    }
                     score[i] = Math.max(score[i], score[j] + 1);
+                    /*
+                    if (j > prev[i]) {
+                        prev[i] = j;
+                    } */
                 }
             }
         }
@@ -40,6 +50,12 @@ public class MaxIncreasingSubseq {
 
         // Test
         for (int i: score) {
+            System.out.println(i);
+        }
+
+        System.out.println();
+
+        for (int i : prev) {
             System.out.println(i);
         }
 
