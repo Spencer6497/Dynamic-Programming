@@ -49,16 +49,11 @@ public class MaxIncreasingSubseq {
 
 
         // Test
-        for (int i: score) {
-            System.out.println(i);
-        }
-
-        System.out.println();
-
         for (int i : prev) {
-            System.out.println(i);
+            if (i >= 0) {
+                System.out.print(i);
+            }
         }
-
 
     }
 }
