@@ -57,11 +57,10 @@ public class Knapsack {
         // Close input scanner
         inputScanner.close();
 
+        System.out.println("Number of projects = " + totalProjects);
+        System.out.println("Done");
+
         // Test
-        for (Project p : projects) {
-            outputWriter.println(p.projectName + ", " + p.workWeeksNeeded + ", " + p.netProfit);
-        }
-        outputWriter.close();
 
     }
     // Create Project class to hold projects
