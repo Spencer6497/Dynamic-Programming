@@ -15,7 +15,67 @@ import java.util.*;
 import java.io.*;
 
 public class Knapsack {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+        // Declare int var to hold available work weeks, total number of projects
+        int availableWorkWeeks, totalProjects = 0;
 
+        // Declar string var to hold input and output files
+        String inputFile, outputFile;
+
+        // Prompt user for work weeks
+        System.out.print("Enter the number of available employee work weeks: ");
+
+        // Instantiate new scanner object that takes user command-line input
+        Scanner userInput = new Scanner(System.in);
+
+        // Grab user input and parse as int, save to variable
+        String workWeekString = userInput.next();
+        availableWorkWeeks = Integer.parseInt(workWeekString);
+
+        // Prompt user for input and output filenames, save to variables
+        System.out.print("Enter the name of the input file: ");
+        inputFile = userInput.next();
+        System.out.print("Enter the name of the output file: ");
+        outputFile = userInput.next();
+
+        // Instantiate new scanner object that takes file input
+        Scanner inputScanner = new Scanner(new File(inputFile));
+        // Instantiate new printwriter object that outputs to a file
+        PrintWriter outputWriter = new PrintWriter(new File(outputFile));
+
+        // Create ArrayList of type Project, populate ArrayList
+        ArrayList<Project> projects = new ArrayList<>();
+        while (inputScanner.hasNextLine()) {
+            // Increment totalProjects
+            totalProjects++;
+            // Grab each line, split into parts
+            String line = inputScanner.nextLine();
+            String[] splitLine = line.split(" ");
+            // Create project object for each line and add to projects
+            projects.add(new Project(splitLine[0], Integer.parseInt(splitLine[1]), Integer.parseInt(splitLine[2])));
+        }
+        // Close input scanner
+        inputScanner.close();
+
+        // Test
+        for (Project p : projects) {
+            outputWriter.println(p.projectName + ", " + p.workWeeksNeeded + ", " + p.netProfit);
+        }
+        outputWriter.close();
+
+    }
+    // Create Project class to hold projects
+    private static class Project {
+        // Create instance variables
+        String projectName;
+        int workWeeksNeeded, netProfit;
+
+        // Create constructor
+        private Project(String name, int workWeeks, int profit) {
+            // Set instance variables
+            this.projectName = name;
+            this.workWeeksNeeded = workWeeks;
+            this.netProfit = profit;
+        }
     }
 }
