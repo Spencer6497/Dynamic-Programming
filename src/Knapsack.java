@@ -57,12 +57,32 @@ public class Knapsack {
         // Close input scanner
         inputScanner.close();
 
+        // Format session output
         System.out.println("Number of projects = " + totalProjects);
         System.out.println("Done");
 
-        // Test
+        // Create two-dimensional array to hold knapsack problem
+        int[][] knapsack = new int[availableWorkWeeks + 1][totalProjects + 1];
+        // initialize base case
+        for (int i = 0; i <= availableWorkWeeks; i++) {
+            knapsack[i][0] = 0;
+        }
 
+        // Iterate through work weeks (rows)
+        for (int i = 0; i <= availableWorkWeeks; i++) {
+            // Iterate through projects (columns)
+            for (int j = 0; j <= totalProjects; j++) {
+                System.out.print(knapsack[i][j]);
+            }
+            System.out.println();
+        }
+
+        /* Output to output file
+        outputWriter.println("Number of projects available: " + totalProjects);
+        outputWriter.println("Available employee work weeks: " + availableWorkWeeks);
+        outputWriter.close(); */
     }
+
     // Create Project class to hold projects
     private static class Project {
         // Create instance variables
@@ -75,6 +95,11 @@ public class Knapsack {
             this.projectName = name;
             this.workWeeksNeeded = workWeeks;
             this.netProfit = profit;
+        }
+
+        // Create toString method
+        public String toString() {
+            return projectName + " " + workWeeksNeeded + " " + netProfit;
         }
     }
 }
