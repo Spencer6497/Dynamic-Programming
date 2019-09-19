@@ -62,20 +62,32 @@ public class Knapsack {
         System.out.println("Done");
 
         // Create two-dimensional array to hold knapsack problem
-        int[][] knapsack = new int[availableWorkWeeks + 1][totalProjects + 1];
-        // initialize base case
+        // In this program, the array will be horizontal, as I find it easier to understand
+        int[][] knapsack = new int[totalProjects + 1][availableWorkWeeks + 1];
+        // initialize base case (java does this automatically but it doesn't hurt to do it just in case)
+        // Set every row of first column to 0
         for (int i = 0; i <= availableWorkWeeks; i++) {
-            knapsack[i][0] = 0;
+            knapsack[0][i] = 0;
         }
 
-        // Iterate through work weeks (rows)
-        for (int i = 0; i <= availableWorkWeeks; i++) {
-            // Iterate through projects (columns)
-            for (int j = 0; j <= totalProjects; j++) {
-                System.out.print(knapsack[i][j]);
+        // Populate array with maximum values
+        // Iterate through projects (columns)
+        for (int i = 1; i <= totalProjects; i++) {
+            // Iterate through work weeks (rows)
+            for (int j = 0; j <= availableWorkWeeks; j++) {
+                // if current project (column) needs more work weeks than currently available (row), set value to left value (base case)
+                if (projects.get(i - 1).workWeeksNeeded > j) {
+                    knapsack[i][j] = knapsack[i - 1][j];
+                } else {
+                    // Maximize potential value at given indices if available work weeks are greater than work weeks needed
+                    knapsack[i][j] = Math.max(knapsack[i - 1][j - projects.get(i - 1).workWeeksNeeded] + projects.get(i - 1).netProfit, knapsack[i - 1][j]);
+                }
             }
-            System.out.println();
         }
+
+        // Instantiate another ArrayList to hold solution (projects that maximize profit)
+
+        // Recover best solution
 
         /* Output to output file
         outputWriter.println("Number of projects available: " + totalProjects);
