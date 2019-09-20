@@ -11,6 +11,7 @@
     for the company to undertake.
 */
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.io.*;
 
@@ -40,11 +41,14 @@ public class Knapsack {
 
         // Instantiate new scanner object that takes file input
         Scanner inputScanner = new Scanner(new File(inputFile));
+
         // Instantiate new printwriter object that outputs to a file
         PrintWriter outputWriter = new PrintWriter(new File(outputFile));
 
-        // Create ArrayList of type Project, populate ArrayList
+        // Create ArrayList of type Project
         ArrayList<Project> projects = new ArrayList<>();
+
+        // Populate ArrayList
         while (inputScanner.hasNextLine()) {
             // Increment totalProjects
             totalProjects++;
@@ -62,25 +66,74 @@ public class Knapsack {
         System.out.println("Done");
 
         // Create two-dimensional array to hold knapsack problem
-        int[][] knapsack = new int[availableWorkWeeks + 1][totalProjects + 1];
-        // initialize base case
+        // In this program, the array will be horizontal, as I find it easier to populate
+        int[][] knapsack = new int[totalProjects + 1][availableWorkWeeks + 1];
+
+        // initialize base case (java does this automatically but it doesn't hurt to do it just in case)
+        // Set every row of first column to 0
         for (int i = 0; i <= availableWorkWeeks; i++) {
-            knapsack[i][0] = 0;
+            knapsack[0][i] = 0;
         }
 
-        // Iterate through work weeks (rows)
-        for (int i = 0; i <= availableWorkWeeks; i++) {
-            // Iterate through projects (columns)
-            for (int j = 0; j <= totalProjects; j++) {
-                System.out.print(knapsack[i][j]);
+        // Populate array with maximum values
+        // Iterate through projects (columns)
+        for (int i = 1; i <= totalProjects; i++) {
+            // Iterate through work weeks (rows)
+            for (int j = 0; j <= availableWorkWeeks; j++) {
+                // if current project (column) needs more work weeks than currently available (row), set value to left value (base case)
+                if (projects.get(i - 1).workWeeksNeeded > j) {
+                    knapsack[i][j] = knapsack[i - 1][j];
+                } else {
+                    // Maximize potential value at given indices if available work weeks are greater than work weeks needed
+                    knapsack[i][j] = Math.max(knapsack[i - 1][j - projects.get(i - 1).workWeeksNeeded] + projects.get(i - 1).netProfit, knapsack[i - 1][j]);
+                }
             }
-            System.out.println();
         }
 
-        /* Output to output file
+        // Instantiate another ArrayList to hold solution (projects that maximize profit)
+        ArrayList<Project> solution = new ArrayList<>();
+
+        // Recover best solution
+        for (int i = totalProjects; i >= 1; i--) {
+            // Base case
+            if (i == 0) {
+                break;
+            } else {
+                for (int j = availableWorkWeeks; j > 1; j--) {
+                    // Base case
+                    if (i == 0) {
+                        break;
+                    }
+                    // if the current maximum value was NOT gotten by including the project, add the previous project to the solution
+                    if (knapsack[i - 1][j - projects.get(i - 1).workWeeksNeeded] + projects.get(i - 1).netProfit != knapsack[i][j]) {
+                        break;
+                    } else {
+                        solution.add(projects.get(i - 1));
+                        j -= projects.get(i - 1).workWeeksNeeded - 1;
+                        i--;
+                    }
+                }
+            }
+        }
+
+        // Output solution to file
         outputWriter.println("Number of projects available: " + totalProjects);
         outputWriter.println("Available employee work weeks: " + availableWorkWeeks);
-        outputWriter.close(); */
+        outputWriter.println("Number of projects chosen: " + solution.size());
+
+        // Calculate profit
+        int profit = 0;
+        for (Project p : solution) {
+            profit += p.netProfit;
+        }
+        outputWriter.println("Total profit: " + profit);
+
+        // Output projects chosen
+        for (Project p : solution) {
+            outputWriter.println(p.toString());
+        }
+
+        outputWriter.close();
     }
 
     // Create Project class to hold projects
