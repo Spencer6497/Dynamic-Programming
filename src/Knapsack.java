@@ -93,32 +93,28 @@ public class Knapsack {
         // Instantiate another ArrayList to hold solution (projects that maximize profit)
         ArrayList<Project> solution = new ArrayList<>();
 
-        // Recover best solution
-        for (int i = totalProjects; i >= 1; i--) {
-            // Base case
-            if (i == 0) {
-                break;
-            } else {
-                for (int j = availableWorkWeeks; j > 1; j--) {
-                    // Base case
-                    if (i == 0) {
-                        break;
-                    }
-                    // if the current maximum value was NOT gotten by including the project, add the previous project to the solution
-                    if (knapsack[i - 1][j - projects.get(i - 1).workWeeksNeeded] + projects.get(i - 1).netProfit != knapsack[i][j]) {
-                        break;
-                    } else {
-                        solution.add(projects.get(i - 1));
-                        j -= projects.get(i - 1).workWeeksNeeded - 1;
-                        i--;
-                    }
-                }
-            }
-        }
-
         // Output solution to file
         outputWriter.println("Number of projects available: " + totalProjects);
         outputWriter.println("Available employee work weeks: " + availableWorkWeeks);
+
+        // Set max value equal to furthest value in knapsack array
+        int max = knapsack[totalProjects][availableWorkWeeks];
+
+        // Recover best solution
+        // Iterate through projects (rows)
+        for (int i = totalProjects; i > 0 && max > 0; i--) {
+            // If the max value is not equal to its' neighboring value, add it to the solution
+            // (value was gotten by taking item, not excluding it)
+            if (max != knapsack[i - 1][availableWorkWeeks]) {
+                solution.add(projects.get(i - 1));
+                // Decrement max value to reflect subtraction of item
+                max -= projects.get(i - 1).netProfit;
+                // Decrement available work weeks to reflect use of employee work weeks in accepting project
+                availableWorkWeeks -= projects.get(i - 1).workWeeksNeeded;
+            }
+        }
+
+        // Continue output
         outputWriter.println("Number of projects chosen: " + solution.size());
 
         // Calculate profit
