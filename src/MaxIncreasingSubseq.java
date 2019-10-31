@@ -1,8 +1,4 @@
 /*
-    Spencer Peace
-    CSC 364-001
-    HW2: Dynamic Programming
-    Dr. Jeff Ward
     This program prompts the user for a string and displays a maximum length increasing subsequence of characters.
     This program is entirely longer than it needs to be, but I cannot seem to shorten it and it works.
  */
